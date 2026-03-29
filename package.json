@@ -1,17 +1,25 @@
 {
-  "name": "gta-smb-automation-engine",
+  "name": "anthonylarocca-website",
   "version": "0.1.0",
-  "description": "AI automation engine for GTA small businesses",
-  "type": "module",
-  "main": "src/index.js",
+  "private": true,
   "scripts": {
-    "start": "node src/index.js",
-    "demo": "node src/demo/email-auto-reply.js",
-    "test": "node src/test-runner.js"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.36.3",
-    "js-yaml": "^4.1.0",
-    "node-cron": "^3.0.3"
+    "next": "14.2.3",
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
+    "postcss": "^8",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5"
   }
 }
