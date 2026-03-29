@@ -48,7 +48,7 @@ export default function Home() {
         {/* Sub-headline */}
         <p className="text-lg md:text-xl text-[#A0A0B8] max-w-2xl mb-10 leading-relaxed">
           Hi, I&apos;m Anthony La Rocca. I help local GTA businesses replace manual, repetitive work
-          with custom AI automations — so you can focus on growth, not admin.
+          with custom AI automations - so you can focus on growth, not admin.
         </p>
 
         {/* CTA Button */}
@@ -58,7 +58,7 @@ export default function Home() {
             className="group inline-flex items-center gap-2 px-8 py-4 bg-[#6C47FF] hover:bg-[#8B6FFF] text-white text-base font-semibold rounded-full transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
             style={{ boxShadow: '0 0 32px rgba(108, 71, 255, 0.4)' }}
           >
-            Book a Free Call
+            Book a Call
             <svg
               className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-150"
               fill="none"
