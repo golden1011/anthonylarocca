@@ -1,0 +1,36 @@
+name: "Email Auto-Reply"
+description: >
+  Automatically draft and send a professional reply to customer inquiry emails
+  using AI. Triggered when an email.received event is emitted.
+
+trigger:
+  type: event
+  event: email.received
+
+steps:
+  - id: draft_reply
+    type: llm
+    systemPrompt: |
+      You are a friendly and professional customer service agent for a small business.
+      Your goal is to respond to customer inquiries helpfully and concisely.
+      Always be warm, professional, and offer clear next steps.
+      Sign off with "Best regards,\nCustomer Service Team".
+    prompt: |
+      A customer sent the following email inquiry. Write a professional reply.
+
+      From: {{trigger.email.from}}
+      Subject: {{trigger.email.subject}}
+
+      Message:
+      {{trigger.email.body}}
+
+      Draft a helpful, concise reply:
+    outputVar: reply_text
+
+  - id: send_reply
+    type: action
+    action: email.send
+    params:
+      to: "{{trigger.email.from}}"
+      subject: "Re: {{trigger.email.subject}}"
+      body: "{{steps.draft_reply.output}}"

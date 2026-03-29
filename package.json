@@ -1,0 +1,17 @@
+{
+  "name": "gta-smb-automation-engine",
+  "version": "0.1.0",
+  "description": "AI automation engine for GTA small businesses",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "demo": "node src/demo/email-auto-reply.js",
+    "test": "node src/test-runner.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.36.3",
+    "js-yaml": "^4.1.0",
+    "node-cron": "^3.0.3"
+  }
+}
