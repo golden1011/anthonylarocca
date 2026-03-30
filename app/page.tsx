@@ -1,353 +1,519 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-
-const FAQS = [
-  {
-    q: 'Do I need to be technical to work with you?',
-    a: "Not at all. You explain how your business works \u2014 we handle everything technical. You'll never need to write code or manage a system you don't understand.",
-  },
-  {
-    q: 'What tools do you work with?',
-    a: "We work with the tools you already use \u2014 Google Workspace, QuickBooks, Jobber, HubSpot, Mailchimp, Shopify, or just email and spreadsheets. We don't force you onto new platforms.",
-  },
-  {
-    q: 'How long does it take to see results?',
-    a: 'Most clients have their first automation live within 2\u20134 weeks. Some simple workflows can be running in days.',
-  },
-  {
-    q: 'What does it cost?',
-    a: "It depends on scope. We'll give you a clear number after the free strategy call \u2014 no surprises. Priced for SMB budgets, not enterprise ones.",
-  },
-  {
-    q: 'What if I want changes after it\u2019s built?',
-    a: 'You own everything we build. We provide post-launch support and are available for adjustments. Our monthly partner option covers continuous improvements.',
-  },
-  {
-    q: 'How is this different from an off-the-shelf AI tool?',
-    a: 'Off-the-shelf tools are generic. We build around your specific workflows, data, and team. The difference is a suit off the rack versus one made for you.',
-  },
-]
+import { useState } from 'react'
+import BookingModal from './components/BookingModal'
 
 export default function Home() {
-  const [openFaq, setOpenFaq] = useState<number | null>(null)
-  const [navBg, setNavBg] = useState('rgba(248,249,252,0.95)')
-
-  useEffect(() => {
-    const onScroll = () =>
-      setNavBg(window.scrollY > 60 ? 'rgba(248,249,252,0.98)' : 'rgba(248,249,252,0.95)')
-    window.addEventListener('scroll', onScroll)
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach((e) => e.isIntersecting && e.target.classList.add('visible')),
-      { threshold: 0.1 }
-    )
-    document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el))
-    return () => observer.disconnect()
-  }, [])
-
-  const toggleFaq = (i: number) => setOpenFaq(openFaq === i ? null : i)
+  const [showBooking, setShowBooking] = useState(false)
 
   return (
-    <>
-      <nav style={{ background: navBg }}>
-        <div className="nav-inner">
-          <a href="#" className="nav-logo">Anthony La Rocca</a>
-          <ul className="nav-links">
-            <li><a href="#how">How It Works</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#proof">Results</a></li>
-            <li><a href="#faq">FAQ</a></li>
-          </ul>
-          <a href="#cta" className="btn btn-primary">Book a Free Call</a>
-          <button className="hamburger" aria-label="Menu">
-            <span /><span /><span />
-          </button>
+    <main className="min-h-screen bg-[#0A0A0F] text-white overflow-x-hidden">
+      {/* Purple glow orb */}
+      <div
+        className="fixed top-[-20%] left-[50%] translate-x-[-50%] w-[900px] h-[600px] rounded-full opacity-10 pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse, #6C47FF 0%, transparent 70%)',
+          filter: 'blur(60px)',
+        }}
+      />
+
+      {/* Sticky Nav */}
+      <nav className="sticky top-0 z-40 bg-[#0A0A0F]/90 backdrop-blur-md border-b border-white/5">
+        <div className="flex items-center justify-between px-6 md:px-12 py-4 max-w-6xl mx-auto">
+          <span className="font-bold text-lg tracking-tight">Anthony La Rocca</span>
+          <div className="flex items-center gap-4">
+            <span className="hidden sm:block text-xs text-[#6C47FF] font-medium animate-pulse">
+              Free 30-Min Call
+            </span>
+            <button
+              onClick={() => setShowBooking(true)}
+              className="px-4 py-2 bg-[#6C47FF] hover:bg-[#8B6FFF] text-white text-sm font-semibold rounded-full transition-all duration-200"
+            >
+              Book a Call
+            </button>
+          </div>
         </div>
       </nav>
 
-      <section id="hero">
-        <div className="hero-inner">
-          <div className="hero-content">
-            <p className="hero-eyebrow">GTA AI Automation</p>
-            <h1 className="hero-headline">
-              Your competition is already using AI. Let&apos;s make sure you&apos;re ahead of them.
-            </h1>
-            <p className="hero-sub">
-              Anthony La Rocca and his GTA-based team build custom AI automations for small
-              businesses &mdash; so you spend less time on busywork and more time growing.
-            </p>
-            <p className="hero-supporting">
-              No tech team required. No six-figure budget. Just practical systems designed and
-              delivered with Anthony&apos;s direct oversight.
-            </p>
-            <div className="hero-ctas">
-              <a href="#cta" className="btn btn-primary btn-large">Book a Free 30-Min Strategy Call</a>
-              <a href="#proof" className="btn btn-ghost btn-large">See What We&apos;ve Built</a>
-            </div>
-            <p className="hero-proof">Trusted by GTA small businesses &mdash; results in 30 days or less</p>
-          </div>
-          <div className="hero-visual">
-            <div className="hero-visual-inner">
-              <div className="hero-visual-icon">&#x26A1;</div>
-              <div className="hero-visual-text">AI Automation<br />Running 24/7</div>
-            </div>
-          </div>
+      {/* ── SECTION 1: HERO ── */}
+      <section className="relative z-10 flex flex-col items-center text-center px-6 pt-20 pb-28 md:pt-28 md:pb-40 max-w-4xl mx-auto">
+        {/* Badge */}
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#6C47FF]/30 bg-[#6C47FF]/10 text-[#A0A0B8] text-sm mb-8">
+          <span className="w-2 h-2 rounded-full bg-[#6C47FF] animate-pulse" />
+          GTA-based · Available for new clients
         </div>
-      </section>
 
-      <section id="problem">
-        <div className="section-inner">
-          <div className="text-center">
-            <p className="section-eyebrow">Sound familiar?</p>
-            <h2 className="section-headline">Running a small business in the GTA means doing everything yourself.</h2>
-            <p className="section-sub">
-              You&apos;re not disorganized &mdash; your business runs on processes that were never built to
-              scale. Large companies have full operations teams automating this. You have yourself. Until now.
-            </p>
-          </div>
-          <div className="pain-points fade-up">
-            <div className="pain-card">
-              <div className="pain-icon">&#x1F501;</div>
-              <div className="pain-title">Answering the same questions over and over</div>
-              <div className="pain-desc">Customer inquiries, booking confirmations, follow-ups &mdash; you handle them manually every single day.</div>
-            </div>
-            <div className="pain-card">
-              <div className="pain-icon">&#x1F4CB;</div>
-              <div className="pain-title">Chasing invoices and cold leads</div>
-              <div className="pain-desc">Revenue is slipping through the cracks because follow-up depends on you remembering to do it.</div>
-            </div>
-            <div className="pain-card">
-              <div className="pain-icon">&#x1F527;</div>
-              <div className="pain-title">Tools that don&apos;t talk to each other</div>
-              <div className="pain-desc">You&apos;re copying data between systems by hand. Every workaround costs you time you don&apos;t have.</div>
-            </div>
-          </div>
+        {/* Headline */}
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.1] tracking-tight mb-6">
+          Stop running your business.{' '}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6C47FF] to-[#A78BFA]">
+            Start growing it.
+          </span>
+        </h1>
+
+        {/* Sub-headline */}
+        <p className="text-lg md:text-xl text-[#A0A0B8] max-w-2xl mb-4 leading-relaxed">
+          We build AI automations for GTA small businesses — so the follow-ups get sent, the
+          invoices get chased, and the leads don&apos;t go cold. All without adding headcount.
+        </p>
+
+        <p className="text-base text-[#A0A0B8]/70 max-w-xl mb-10">
+          No technical background needed. No long contracts. You own everything we build.
+        </p>
+
+        {/* CTA */}
+        <div className="flex flex-col sm:flex-row items-center gap-3 mb-4">
+          <button
+            onClick={() => setShowBooking(true)}
+            className="group inline-flex items-center gap-2 px-8 py-4 bg-[#6C47FF] hover:bg-[#8B6FFF] text-white text-base font-semibold rounded-full transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+            style={{ boxShadow: '0 0 32px rgba(108, 71, 255, 0.4)' }}
+          >
+            Book a Free 30-Min Strategy Call
+            <svg
+              className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-150"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </button>
+          <button
+            onClick={() => {
+              document.getElementById('proof')?.scrollIntoView({ behavior: 'smooth' })
+            }}
+            className="px-6 py-3 border border-white/10 hover:border-white/30 text-[#A0A0B8] hover:text-white text-sm font-medium rounded-full transition-all duration-200"
+          >
+            See What We&apos;ve Built
+          </button>
         </div>
-      </section>
 
-      <section id="how">
-        <div className="section-inner">
-          <div className="text-center">
-            <p className="section-eyebrow">The process</p>
-            <h2 className="section-headline">We bring enterprise-grade automation to businesses your size.</h2>
-            <p className="section-sub">
-              We map your repetitive workflows, identify where AI can take over, and build automations
-              that run while you focus on growth.
-            </p>
-          </div>
-          <div className="steps fade-up">
-            <div className="step-card">
-              <div className="step-num">01</div>
-              <div className="step-title">Discovery Session</div>
-              <div className="step-desc">We map your workflows and identify the highest-ROI automation opportunities specific to your business.</div>
-            </div>
-            <div className="step-card">
-              <div className="step-num">02</div>
-              <div className="step-title">Custom Build</div>
-              <div className="step-desc">We connect your existing tools and build the automations. No code required from you &mdash; we handle everything technical.</div>
-            </div>
-            <div className="step-card">
-              <div className="step-num">03</div>
-              <div className="step-title">Launch + Ongoing Support</div>
-              <div className="step-desc">Everything is tested with real data before going live. We stay available for adjustments as your business grows.</div>
-            </div>
-          </div>
-        </div>
-      </section>
+        {/* Urgency signal */}
+        <p className="text-sm text-[#A0A0B8]/60 italic">
+          We take on 4–6 new clients per month — currently accepting March intakes.
+        </p>
 
-      <section id="services">
-        <div className="section-inner">
-          <div className="text-center">
-            <p className="section-eyebrow">What we build</p>
-            <h2 className="section-headline">This isn&apos;t software. It&apos;s a done-for-you system built around your business.</h2>
-            <p className="section-sub">We work inside your existing tools &mdash; no new platforms, no lock-in.</p>
-          </div>
-          <div className="services-grid fade-up">
-            <div className="service-card">
-              <div className="service-icon">&#x1F680;</div>
-              <div className="service-name">Starter</div>
-              <div className="service-tag">Best for one core workflow</div>
-              <div className="service-desc">Perfect for a clear pain point &mdash; lead follow-up, booking confirmations, invoice reminders. Most automations live within 2&ndash;4 weeks.</div>
-            </div>
-            <div className="service-card">
-              <div className="service-icon">&#x1F4C8;</div>
-              <div className="service-name">Growth</div>
-              <div className="service-tag">Best for connecting your full operation</div>
-              <div className="service-desc">We audit your full workflow stack, prioritize the top 3&ndash;5 opportunities, and build them together over 30&ndash;60 days.</div>
-            </div>
-            <div className="service-card">
-              <div className="service-icon">&#x1F91D;</div>
-              <div className="service-name">Ongoing Partner</div>
-              <div className="service-tag">Best for continuous AI integration</div>
-              <div className="service-desc">Monthly retainer. We run your automation ops, monitor performance, and continuously build as your business evolves.</div>
-            </div>
-            <div className="service-card">
-              <div className="service-icon">&#x26A1;</div>
-              <div className="service-name">What we automate</div>
-              <div className="service-tag">Across every engagement</div>
-              <div className="service-desc">Customer follow-ups &middot; Appointment reminders &middot; Lead qualification &middot; Invoice chasing &middot; Inventory alerts &middot; Onboarding sequences</div>
-            </div>
-          </div>
-          <div className="services-cta">
-            <a href="#cta" className="btn btn-primary btn-large">Talk to Us About Your Business</a>
-          </div>
-        </div>
-      </section>
-
-      <section id="proof">
-        <div className="section-inner">
-          <div className="text-center">
-            <p className="section-eyebrow">Client results</p>
-            <h2 className="section-headline">Real automations. Real GTA businesses. Real time saved.</h2>
-          </div>
-          <div className="testimonials fade-up">
-            <div className="testimonial">
-              <div className="stars">&#x2605;&#x2605;&#x2605;&#x2605;&#x2605;</div>
-              <p className="quote">&ldquo;We were losing leads because nobody had time to follow up within the first hour. Now it&apos;s automatic &mdash; the prospect gets a text in under two minutes, and our close rate has gone up noticeably.&rdquo;</p>
-              <div className="attrib">
-                <div className="attrib-avatar">H</div>
-                <div>
-                  <div className="attrib-name">Owner, HVAC Company</div>
-                  <div className="attrib-biz">Mississauga, ON</div>
-                </div>
-              </div>
-              <span className="result-badge">3x faster lead response &middot; ~10 more bookings/month</span>
-            </div>
-            <div className="testimonial">
-              <div className="stars">&#x2605;&#x2605;&#x2605;&#x2605;&#x2605;</div>
-              <p className="quote">&ldquo;I was spending Sunday nights prepping Monday&apos;s client reminders and intake forms. That&apos;s completely gone now. It just happens.&rdquo;</p>
-              <div className="attrib">
-                <div className="attrib-avatar">A</div>
-                <div>
-                  <div className="attrib-name">Principal, Accounting Firm</div>
-                  <div className="attrib-biz">North York, ON</div>
-                </div>
-              </div>
-              <span className="result-badge">4+ hours saved/week &middot; Zero missed follow-ups</span>
-            </div>
-            <div className="testimonial">
-              <div className="stars">&#x2605;&#x2605;&#x2605;&#x2605;&#x2605;</div>
-              <p className="quote">&ldquo;The inventory alert system alone paid for the entire engagement in the first month. We stopped losing sales from stockouts we didn&apos;t catch in time.&rdquo;</p>
-              <div className="attrib">
-                <div className="attrib-avatar">R</div>
-                <div>
-                  <div className="attrib-name">Owner, Specialty Retail</div>
-                  <div className="attrib-biz">Etobicoke, ON</div>
-                </div>
-              </div>
-              <span className="result-badge">~70% fewer stockouts &middot; ROI in first month</span>
-            </div>
-          </div>
-          <div className="trust-strip fade-up">
-            <span className="trust-item">GTA-based &mdash; we work with local businesses in person</span>
-            <span className="trust-item">No lock-in contracts &mdash; you own everything we build</span>
-            <span className="trust-item">Works inside your existing tools</span>
-            <span className="trust-item">Results in 30 days or less</span>
-          </div>
-        </div>
-      </section>
-
-      <section id="about">
-        <div className="section-inner">
-          <div className="about-inner">
-            <div className="about-visual">&#x1F464;</div>
-            <div>
-              <p className="section-eyebrow">About</p>
-              <h2 className="section-headline">Founder-led. Local. Accountable.</h2>
-              <p className="about-bio">
-                Anthony La Rocca is a GTA-based operator focused on practical automation wins for
-                small businesses. Every strategy call is grounded in your current process, your
-                margins, and what your team can realistically adopt fast.
-              </p>
-              <p className="about-bio">
-                We&apos;re not a SaaS company. We&apos;re a hands-on implementation partner &mdash; sitting
-                between cheap DIY tools and expensive enterprise consultants, built for the GTA SMB market.
-              </p>
-              <a href="#cta" className="btn btn-primary btn-large">Work Directly With Anthony</a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="faq">
-        <div className="section-inner">
-          <div className="text-center">
-            <p className="section-eyebrow">FAQ</p>
-            <h2 className="section-headline">Not sure if automation is right for you?</h2>
-            <p className="section-sub">
-              That&apos;s exactly what the free strategy call is for. Most business owners walk out
-              with 3&ndash;5 concrete ideas they can act on immediately.
-            </p>
-          </div>
-          <div className="faq-list">
-            {FAQS.map((item, i) => (
-              <div key={i} className="faq-item">
-                <button
-                  className="faq-q"
-                  aria-expanded={openFaq === i}
-                  onClick={() => toggleFaq(i)}
+        {/* Tools strip */}
+        <div className="mt-16 pt-10 border-t border-white/5 w-full">
+          <p className="text-xs uppercase tracking-widest text-[#A0A0B8]/40 mb-5">
+            Works with the tools you already use
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-8">
+            {['Make.com', 'n8n', 'OpenAI', 'Zapier', 'Airtable', 'Notion AI', 'Shopify', 'QuickBooks'].map(
+              (tool) => (
+                <span
+                  key={tool}
+                  className="text-sm font-medium text-[#A0A0B8]/40 hover:text-[#A0A0B8] transition-colors duration-150"
                 >
-                  {item.q}
-                  <span className={`faq-icon${openFaq === i ? ' expanded' : ''}`}>+</span>
-                </button>
-                {openFaq === i && <div className="faq-a">{item.a}</div>}
+                  {tool}
+                </span>
+              ),
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* ── SECTION 2: PROBLEM / SOLUTION ── */}
+      <section className="relative z-10 px-6 py-24 max-w-4xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-12">
+          {/* Problem */}
+          <div>
+            <p className="text-xs uppercase tracking-widest text-[#A0A0B8]/50 mb-4">The Problem</p>
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 leading-tight">
+              Running a small business in the GTA is a full-contact sport.
+            </h2>
+            <div className="space-y-4 text-[#A0A0B8] leading-relaxed">
+              <p>
+                You&apos;re the salesperson, the admin, the follow-up person, and the one who notices
+                when something slips through the cracks.
+              </p>
+              <p>
+                You answer the same questions twice a week. You chase the same invoices every month.
+                You manually copy data between tools that should talk to each other.
+              </p>
+              <p className="text-white/80 font-medium">
+                It&apos;s not a discipline problem. It&apos;s a systems problem.
+              </p>
+              <p>
+                The automations that large companies use to run lean operations were out of reach for
+                a business your size.
+              </p>
+              <p className="text-[#6C47FF] font-semibold text-lg">That&apos;s changed.</p>
+            </div>
+          </div>
+
+          {/* Solution */}
+          <div>
+            <p className="text-xs uppercase tracking-widest text-[#A0A0B8]/50 mb-4">The Solution</p>
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 leading-tight">
+              We build those systems for you — fitted to your business, not a template.
+            </h2>
+            <div className="space-y-4 text-[#A0A0B8] leading-relaxed">
+              <p>
+                We sit down with you, map how your business actually runs, and build automations that
+                take the repetitive work off your plate.
+              </p>
+              <p>
+                They run in the background. They don&apos;t require you to learn anything new. And
+                they start working in weeks, not months.
+              </p>
+              <p>
+                Customer follow-ups. Appointment reminders. Lead qualification. Invoice chasing.
+                Inventory alerts. Onboarding sequences.
+              </p>
+              <div className="mt-6 p-4 rounded-xl border border-[#6C47FF]/20 bg-[#6C47FF]/5">
+                <p className="text-white font-medium">
+                  The result: hours back every week. Fewer things falling through the cracks. A
+                  business that handles more — without you handling more.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Mid-page soft CTA */}
+        <div className="mt-14 text-center">
+          <p className="text-[#A0A0B8] mb-4">Want to see what this looks like for your type of business?</p>
+          <button
+            onClick={() => setShowBooking(true)}
+            className="px-6 py-3 border border-white/10 hover:border-[#6C47FF]/50 hover:bg-[#6C47FF]/10 text-[#A0A0B8] hover:text-white text-sm font-medium rounded-full transition-all duration-200"
+          >
+            Send Us a Question
+          </button>
+        </div>
+      </section>
+
+      {/* ── SECTION 3: AUTHORITY BAR ── */}
+      <section className="relative z-10 px-6 py-16 border-y border-white/5 bg-white/[0.02]">
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="text-sm font-semibold text-[#A0A0B8] uppercase tracking-widest mb-10">
+            Built for the GTA. Proven in the field.
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              { stat: '60+', label: 'Automations live across GTA small businesses' },
+              { stat: '4 sectors', label: 'Trades, retail, hospitality, professional services' },
+              { stat: '18 days', label: 'Average time to first automation live' },
+              { stat: '100%', label: 'Client ownership — no platform lock-in, ever' },
+            ].map(({ stat, label }) => (
+              <div key={stat} className="flex flex-col items-center gap-2">
+                <span className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#6C47FF] to-[#A78BFA]">
+                  {stat}
+                </span>
+                <span className="text-sm text-[#A0A0B8] leading-snug">{label}</span>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="cta">
-        <div className="section-inner">
-          <h2 className="section-headline">Ready to stop doing it manually?</h2>
-          <p className="section-sub">
-            Book a free 30-minute call. We&apos;ll look at your business together and tell you exactly
-            which automations would have the biggest impact.
+      {/* ── SECTION 4: OFFER FRAMING ── */}
+      <section className="relative z-10 px-6 py-24 max-w-4xl mx-auto">
+        <div className="text-center mb-14">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
+            This isn&apos;t software.{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6C47FF] to-[#A78BFA]">
+              It&apos;s a done-for-you system built around your business.
+            </span>
+          </h2>
+          <p className="text-[#A0A0B8] max-w-2xl mx-auto">
+            We don&apos;t hand you a login and a tutorial. We understand how your business works,
+            then we build it, connect it, test it, and hand it off running.
           </p>
-          <a href="mailto:hello@anthonylarocca.ca" className="btn btn-primary">
-            Book Your Free Strategy Call
-          </a>
-          <p className="cta-note">No sales pitch. No commitment. Just a conversation about your business.</p>
+        </div>
+
+        {/* What's included */}
+        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+          {[
+            { icon: '🗺️', title: 'Discovery', body: 'We map your workflows and identify the highest-impact automation opportunities' },
+            { icon: '🔧', title: 'Custom Build', body: 'We connect your tools and build the automations — we handle all the technical work' },
+            { icon: '✅', title: 'Launch + QA', body: 'Everything is tested with real data before it goes live' },
+            { icon: '📞', title: 'Ongoing Support', body: "We're available for adjustments and expansions as your business grows" },
+          ].map(({ icon, title, body }) => (
+            <div
+              key={title}
+              className="p-5 rounded-xl border border-white/8 bg-white/[0.03] hover:border-[#6C47FF]/30 transition-colors duration-200"
+            >
+              <div className="text-2xl mb-3">{icon}</div>
+              <p className="font-semibold text-white mb-2">{title}</p>
+              <p className="text-sm text-[#A0A0B8] leading-relaxed">{body}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Offer Tiers */}
+        <div className="grid md:grid-cols-3 gap-6">
+          {/* Starter */}
+          <div className="p-6 rounded-2xl border border-white/8 bg-white/[0.02] flex flex-col gap-4">
+            <div>
+              <p className="text-xs uppercase tracking-widest text-[#A0A0B8]/60 mb-1">Starter</p>
+              <p className="text-sm text-[#A0A0B8] italic mb-3">
+                For you if: you have one clear pain point and want to see results fast.
+              </p>
+            </div>
+            <p className="text-[#A0A0B8] text-sm leading-relaxed flex-1">
+              Lead follow-up, booking confirmations, invoice reminders — we pick the highest-ROI
+              workflow, build it out, and get it live within 2 weeks. Clean and fast.
+            </p>
+            <button
+              onClick={() => setShowBooking(true)}
+              className="mt-auto w-full py-2.5 border border-white/10 hover:border-[#6C47FF]/50 hover:bg-[#6C47FF]/10 text-sm text-[#A0A0B8] hover:text-white rounded-full transition-all duration-200"
+            >
+              Let&apos;s Talk
+            </button>
+          </div>
+
+          {/* Growth — highlighted */}
+          <div
+            className="p-6 rounded-2xl border border-[#6C47FF]/40 bg-[#6C47FF]/5 flex flex-col gap-4 relative"
+            style={{ boxShadow: '0 0 40px rgba(108, 71, 255, 0.12)' }}
+          >
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#6C47FF] text-white text-xs font-semibold rounded-full">
+              Most Popular
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-widest text-[#A0A0B8]/60 mb-1">Growth</p>
+              <p className="text-sm text-[#A0A0B8] italic mb-3">
+                For you if: you&apos;re ready to connect your whole operation.
+              </p>
+            </div>
+            <p className="text-[#A0A0B8] text-sm leading-relaxed flex-1">
+              We audit your full workflow stack, rank the top 3–5 automation opportunities by
+              impact, and build them out over 30–60 days. This is where businesses usually see a
+              step-change in how they operate.
+            </p>
+            <button
+              onClick={() => setShowBooking(true)}
+              className="mt-auto w-full py-2.5 bg-[#6C47FF] hover:bg-[#8B6FFF] text-white text-sm font-semibold rounded-full transition-all duration-200"
+            >
+              Find Out Which Is Right for You
+            </button>
+          </div>
+
+          {/* Ongoing Partner */}
+          <div className="p-6 rounded-2xl border border-white/8 bg-white/[0.02] flex flex-col gap-4">
+            <div>
+              <p className="text-xs uppercase tracking-widest text-[#A0A0B8]/60 mb-1">Ongoing Partner</p>
+              <p className="text-sm text-[#A0A0B8] italic mb-3">
+                For you if: you want AI built into everything you do going forward.
+              </p>
+            </div>
+            <p className="text-[#A0A0B8] text-sm leading-relaxed flex-1">
+              Monthly retainer. We run your automation ops, monitor what&apos;s live, and keep
+              building as your business evolves. Your dedicated automation team — without the
+              full-time hire.
+            </p>
+            <button
+              onClick={() => setShowBooking(true)}
+              className="mt-auto w-full py-2.5 border border-white/10 hover:border-[#6C47FF]/50 hover:bg-[#6C47FF]/10 text-sm text-[#A0A0B8] hover:text-white rounded-full transition-all duration-200"
+            >
+              Let&apos;s Talk
+            </button>
+          </div>
         </div>
       </section>
 
-      <footer>
-        <div className="footer-inner">
-          <div>
-            <div className="footer-brand">Anthony La Rocca</div>
-            <div className="footer-tagline">
-              GTA-based AI automation for small businesses.<br />
-              Founder-led. Practical. No lock-in.
-            </div>
+      {/* ── SECTION 5: PROOF BLOCKS ── */}
+      <section id="proof" className="relative z-10 px-6 py-24 bg-white/[0.01] border-t border-white/5">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Real automations. Real GTA businesses.{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6C47FF] to-[#A78BFA]">
+                Real results.
+              </span>
+            </h2>
           </div>
-          <div>
-            <div className="footer-heading">Services</div>
-            <ul className="footer-links">
-              <li><a href="#how">How It Works</a></li>
-              <li><a href="#services">Starter</a></li>
-              <li><a href="#services">Growth</a></li>
-              <li><a href="#services">Ongoing Partner</a></li>
-            </ul>
+
+          <div className="grid md:grid-cols-3 gap-6 mb-14">
+            {[
+              {
+                quote:
+                  "We were losing leads because nobody had time to follow up in the first hour. Now it's automatic — the prospect gets a text in under two minutes. Our close rate has gone up and I stopped thinking about it.",
+                author: 'Owner, residential HVAC company',
+                location: 'Mississauga',
+                result: '3× faster lead response. 7 additional bookings in the first month.',
+              },
+              {
+                quote:
+                  "Sunday nights used to be me prepping client reminders and intake forms for Monday. That's completely gone now. It just happens — correctly, every time.",
+                author: 'Principal, accounting firm',
+                location: 'North York',
+                result: '4+ hours recovered per week. Zero missed intake follow-ups since launch.',
+              },
+              {
+                quote:
+                  'The inventory alert system paid for the entire engagement in the first month. We stopped losing sales from stockouts we didn't see coming.',
+                author: 'Owner, specialty retail shop',
+                location: 'Etobicoke',
+                result: 'Stockout incidents down 70%. No more emergency restocking runs.',
+              },
+            ].map(({ quote, author, location, result }) => (
+              <div
+                key={author}
+                className="p-6 rounded-2xl border border-white/8 bg-white/[0.03] flex flex-col gap-4"
+              >
+                <p className="text-[#A0A0B8] text-sm leading-relaxed italic flex-1">
+                  &ldquo;{quote}&rdquo;
+                </p>
+                <div>
+                  <p className="text-white text-sm font-medium">{author}</p>
+                  <p className="text-[#A0A0B8]/60 text-xs">{location}</p>
+                </div>
+                <div className="pt-3 border-t border-white/5">
+                  <p className="text-[#6C47FF] text-xs font-medium leading-relaxed">{result}</p>
+                </div>
+              </div>
+            ))}
           </div>
-          <div>
-            <div className="footer-heading">Company</div>
-            <ul className="footer-links">
-              <li><a href="#about">About</a></li>
-              <li><a href="#proof">Results</a></li>
-              <li><a href="#faq">FAQ</a></li>
-              <li><a href="#cta">Book a Call</a></li>
-            </ul>
+
+          {/* Trust Signals */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { icon: '📍', label: 'GTA-based', sub: 'Local team, in person when it matters' },
+              { icon: '🔑', label: 'You own everything', sub: 'No platform lock-in, ever' },
+              { icon: '🔧', label: 'Works with your tools', sub: "We don't force you onto new software" },
+              { icon: '⚡', label: 'Live in weeks', sub: 'First automation typically goes live in 2–3 weeks' },
+            ].map(({ icon, label, sub }) => (
+              <div key={label} className="p-4 rounded-xl border border-white/8 bg-white/[0.02] text-center">
+                <div className="text-xl mb-2">{icon}</div>
+                <p className="text-white text-sm font-medium mb-1">{label}</p>
+                <p className="text-[#A0A0B8] text-xs leading-snug">{sub}</p>
+              </div>
+            ))}
           </div>
         </div>
-        <div className="footer-bottom">
-          <span>&copy; 2026 Anthony La Rocca. All rights reserved.</span>
-          <span>GTA AI Automation</span>
+      </section>
+
+      {/* ── SECTION 6: CTA BLOCK ── */}
+      <section className="relative z-10 px-6 py-28 max-w-3xl mx-auto text-center">
+        <h2 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
+          Ready to get some of your time back?
+        </h2>
+        <p className="text-[#A0A0B8] max-w-xl mx-auto mb-8 leading-relaxed">
+          Book a free 30-minute call. We&apos;ll look at your business, tell you exactly which
+          automations would have the biggest impact, and give you a clear picture of what it looks
+          like to work with us.
+        </p>
+        <button
+          onClick={() => setShowBooking(true)}
+          className="group inline-flex items-center gap-2 px-8 py-4 bg-[#6C47FF] hover:bg-[#8B6FFF] text-white text-base font-semibold rounded-full transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 mb-4"
+          style={{ boxShadow: '0 0 32px rgba(108, 71, 255, 0.4)' }}
+        >
+          Book Your Free Strategy Call
+          <svg
+            className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-150"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </button>
+        <p className="text-sm text-[#A0A0B8]/60">
+          No sales pitch. No commitment. Just clarity.
+        </p>
+        <p className="text-sm text-[#A0A0B8]/40 mt-1 italic">
+          Spots are limited — we keep our client roster small on purpose.
+        </p>
+      </section>
+
+      {/* ── SECTION 7: FAQ ── */}
+      <section className="relative z-10 px-6 pb-24 max-w-2xl mx-auto">
+        <div className="text-center mb-10">
+          <h2 className="text-2xl md:text-3xl font-bold mb-3">Common questions</h2>
+          <p className="text-[#A0A0B8]">
+            Still on the fence? That&apos;s what the call is for. Most business owners walk away
+            with 3–5 concrete automation ideas — whether they work with us or not.
+          </p>
+        </div>
+
+        <div className="space-y-3">
+          {[
+            {
+              q: 'What does it cost?',
+              a: 'Starter projects begin at $[X]. Growth and Ongoing Partner engagements are scoped after your strategy call — we give you a clear number before anything starts. No surprises.',
+            },
+            {
+              q: 'How long until I see results?',
+              a: 'Most clients have their first automation live within 2–3 weeks of kickoff. Simple workflows can be running in days.',
+            },
+            {
+              q: 'Do I need to be technical?',
+              a: "Not at all. You describe how your business works — we handle everything else. You'll never write code or manage a system you don't understand.",
+            },
+            {
+              q: 'What tools do you work with?',
+              a: "Whatever you're already using — Google Workspace, QuickBooks, Jobber, HubSpot, Mailchimp, Shopify, or just email and spreadsheets. We don't move you to new platforms.",
+            },
+            {
+              q: 'What if I want changes after it\'s built?',
+              a: 'You own everything. We provide post-launch support for adjustments, and our Ongoing Partner option covers continuous improvements as your business grows.',
+            },
+          ].map(({ q, a }) => (
+            <FaqItem key={q} question={q} answer={a} />
+          ))}
+        </div>
+
+        <div className="mt-12 text-center">
+          <button
+            onClick={() => setShowBooking(true)}
+            className="px-6 py-3 bg-[#6C47FF]/20 hover:bg-[#6C47FF]/30 text-[#A0A0B8] hover:text-white text-sm font-medium rounded-full transition-all duration-200"
+          >
+            Let&apos;s Talk
+          </button>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="relative z-10 border-t border-white/5 px-6 py-10">
+        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <p className="font-bold text-white mb-1">Anthony La Rocca</p>
+            <p className="text-[#A0A0B8]/60 text-sm">Local team. Real results. No lock-in.</p>
+          </div>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setShowBooking(true)}
+              className="px-5 py-2.5 bg-[#6C47FF] hover:bg-[#8B6FFF] text-white text-sm font-semibold rounded-full transition-all duration-200"
+            >
+              Book a Free Call
+            </button>
+          </div>
         </div>
       </footer>
-    </>
+
+      {showBooking && <BookingModal onClose={() => setShowBooking(false)} />}
+    </main>
+  )
+}
+
+function FaqItem({ question, answer }: { question: string; answer: string }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="rounded-xl border border-white/8 bg-white/[0.02] overflow-hidden">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center justify-between px-5 py-4 text-left"
+      >
+        <span className="text-white font-medium text-sm">{question}</span>
+        <svg
+          className={`w-4 h-4 text-[#A0A0B8] flex-shrink-0 ml-3 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      {open && (
+        <div className="px-5 pb-4">
+          <p className="text-[#A0A0B8] text-sm leading-relaxed">{answer}</p>
+        </div>
+      )}
+    </div>
   )
 }
